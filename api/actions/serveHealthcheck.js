@@ -82,6 +82,17 @@ const healthchecks = {
       throw new Error("response status: " + response.status);
     }
   },
+  "https://community.cisco.com/": async () => {
+    const response = await fetch(
+      new URL(
+        "https://community.cisco.com/kxiwq67737/rss/message?board.id=4561-blogs-security&message.id=1790"
+      )
+    );
+
+    if (!response.ok) {
+      throw new Error("response status: " + response.status);
+    }
+  },
 };
 
 async function runHealthchecks() {
@@ -145,6 +156,8 @@ async function serveHealthcheck(req, res, next) {
 
   return res
     .set({
+      "Cache-Control": "public, s-maxage=30, max-age=30", // 30 seconds on CDN/clients
+      "Cache-Tag": "healthcheck",
       "Content-Type": "application/health+json",
     })
     .send(response);

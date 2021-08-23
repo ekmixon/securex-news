@@ -7,6 +7,7 @@ const {
 } = require("../../dataSources/securex-training");
 const { getNews: getLocalNews } = require("../../dataSources/contentful");
 const { getNews: getDuoNews } = require("../../dataSources/duo");
+const { getNews: getOrbitalNews } = require("../../dataSources/orbital-corner");
 
 async function serveNews(req, res, next) {
   let [
@@ -16,6 +17,7 @@ async function serveNews(req, res, next) {
     secureXTrainingNews,
     localNews,
     duoNews,
+    orbitalNews,
   ] = await Promise.all([
     getTalosNews(),
     getUSCertNews(),
@@ -23,6 +25,7 @@ async function serveNews(req, res, next) {
     getSecureXTrainingNews(),
     getLocalNews(),
     getDuoNews(),
+    getOrbitalNews(),
   ]);
 
   const news = [
@@ -32,6 +35,7 @@ async function serveNews(req, res, next) {
     ...(secureXTrainingNews.items || []),
     ...(localNews.items || []),
     ...(duoNews.items || []),
+    ...(orbitalNews.items || []),
   ]
     .sort(
       (
@@ -69,6 +73,7 @@ async function serveNews(req, res, next) {
     ...(secureXTrainingNews.sources || {}),
     ...(localNews.sources || {}),
     ...(duoNews.sources || {}),
+    ...(orbitalNews.sources || {}),
   };
 
   Object.keys(sources).forEach((x) => {
