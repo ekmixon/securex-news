@@ -6,6 +6,8 @@ jest.mock("node-fetch", () => {
       ? mockParseURLSecureXTraining()
       : url.startsWith("https://cdn.contentful.com/")
       ? mockParseURLSecureXCms()
+      : url.startsWith("https://community.cisco.com/")
+      ? mockParseURLOrbital()
       : "";
 
     return Promise.resolve({
@@ -27,7 +29,7 @@ const mockCiscoBlogFixture = require("./fixtures/cisco-blog/response.json");
 const mockSecureXTrainingFixture = require("./fixtures/securex-training/response.json");
 const mockSecureXCmsFixture = require("./fixtures/contentful/response.json");
 const mockDuoFixture = require("./fixtures/duo/response.json");
-const mockOrbitalFixture = require("./fixtures/orbital-corner/response.json");
+const mockOrbitalFixture = require("./fixtures/orbital-query-corner/response.json");
 const handler = require("../api/index.js");
 const { response } = require("express");
 
@@ -59,8 +61,6 @@ jest.mock("rss-parser", () =>
         ? mockParseURLCiscoBlog()
         : source.startsWith("https://duo.com/")
         ? mockParseURLDuo()
-        : source.startsWith("https://community.cisco.com/")
-        ? mockParseURLOrbital()
         : "",
   }))
 );
@@ -102,7 +102,7 @@ describe("news service", () => {
         expect(result.status).toBe("pass");
       });
 
-    expect(fetch).toHaveBeenCalledTimes(11);
+    expect(fetch).toHaveBeenCalledTimes(12);
 
     fetch.mockReturnValue(
       Promise.resolve(

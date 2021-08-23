@@ -7,7 +7,9 @@ const {
 } = require("../../dataSources/securex-training");
 const { getNews: getLocalNews } = require("../../dataSources/contentful");
 const { getNews: getDuoNews } = require("../../dataSources/duo");
-const { getNews: getOrbitalNews } = require("../../dataSources/orbital-corner");
+const {
+  getNews: getOrbitalNews,
+} = require("../../dataSources/orbital-query-corner");
 
 async function serveNews(req, res, next) {
   let [
